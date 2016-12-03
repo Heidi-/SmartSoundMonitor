@@ -68,25 +68,32 @@ var sensor = new sensorObj.Loudness(0, 5.0);
 // Every tenth of a second, sample the loudness and output it's
 // corresponding analog voltage. 
 var greenLed = new groveSensor.GroveLed(3);
-greenLed.off();
+//greenLed.on();
 var redLed = new groveSensor.GroveLed(2);
-redLed.off();
+//redLed.off();
 
 
 setInterval(function()
 {
     console.log("Detected loudness (volts): " + sensor.loudness()); 
-    if (sensor.loudness() <= 1) {
+    
+    if (sensor.loudness() > .70 && sensor.loudness() < 1.60) {
        greenLed.on();  
-    } else if (sensor.loudness() > 1) {
+    } else if (sensor.loudness() > 1.60) {
         redLed.on();
         greenLed.off();
     } else {
         greenLed.off();
         redLed.off();
-    }
+    } 
      
-}, 100);
+}, 5);
+
+
+// 
+
+//
+
 
 // exit on ^C
 process.on('SIGINT', function()
