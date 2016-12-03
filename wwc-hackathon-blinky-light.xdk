@@ -1,0 +1,40 @@
+{
+  "project": {
+    "projectSettingsVersion": "3.0.0",
+    "creationData": {
+      "projectTypeName": "com.intel.xdk.projecttype.iotapp",
+      "src": "iotapp/iotapp-template-onboard-led-blink/sample.zip",
+      "projectGuid": "fe8267fc-49fd-48d4-b2df-f6d18350ee08",
+      "lastModifiedDate": 1480794464592,
+      "creationDate": 1480794463400
+    },
+    "sourceDirectory": "",
+    "cordovaPluginsDirectory": "plugins",
+    "startFile": "main.js",
+    "projectTags": [],
+    "projectFiles": {},
+    "projectDirectories": {
+      "iot/xdk": {
+        "settings": {
+          "project": {
+            "XDK-generated": "true"
+          }
+        }
+      },
+      "xdk": {
+        "settings": {
+          "project": {
+            "XDK-generated": "true"
+          }
+        }
+      }
+    },
+    "libraries": [],
+    "cordovaPlugins": [],
+    "serviceMethods": [],
+    "buildConfigurations": {},
+    "testDirectory": "test",
+    "gameAssetDirectory": "asset",
+    "gameMetadata": {}
+  }
+}

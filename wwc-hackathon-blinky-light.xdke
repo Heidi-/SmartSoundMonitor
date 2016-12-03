@@ -1,0 +1,86 @@
+{
+  "project": {
+    "projectSettingsVersion": "3.0.0",
+    "currentBuildConfiguration": null,
+    "projectFiles": {},
+    "projectDirectories": {}
+  },
+  "editorTab": {
+    "currentEditorMode": 0
+  },
+  "iot-tab": {
+    "fileStatus": {
+      ".gitignore": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": ".gitignore"
+      },
+      "LICENSE.md": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": "LICENSE.md"
+      },
+      "README.md": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": "README.md"
+      },
+      "cfg-app-platform.js": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": "cfg-app-platform.js"
+      },
+      "icon.png": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": "icon.png"
+      },
+      "main.js": {
+        "previousModTime": 1480802389000,
+        "modified": 1480802389000,
+        "seen": true,
+        "name": "main.js"
+      },
+      "package.json": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": "package.json"
+      },
+      "wwc-hackathon-blinky-light.xdk": {
+        "previousModTime": 1480794465000,
+        "modified": 1480794465000,
+        "seen": true,
+        "name": "wwc-hackathon-blinky-light.xdk"
+      },
+      "wwc-hackathon-blinky-light.xdke": {
+        "previousModTime": 1480802339000,
+        "modified": 1480802339000,
+        "seen": true,
+        "name": "wwc-hackathon-blinky-light.xdke"
+      },
+      "utl/version-compare.js": {
+        "previousModTime": 1480794463000,
+        "modified": 1480794463000,
+        "seen": true,
+        "name": "utl/version-compare.js"
+      },
+      "xdk/project-info.json": {
+        "previousModTime": 1480794464000,
+        "modified": 1480794464000,
+        "seen": true,
+        "name": "xdk/project-info.json"
+      }
+    },
+    "boardFileStatus": {
+      "main.js": {
+        "previousModTime": 1480802391139
+      }
+    }
+  }
+}
