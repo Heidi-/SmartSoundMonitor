@@ -56,7 +56,7 @@ function isOverDailyLimit(cumulative) {
 
 function isOverDangerLimit(soundLevel){
     // var limit = 115; // Do not exceed exposure for more than 15 minutes.
-    var limit = 30; // demo level
+    var limit = 50; // demo level
     if (soundLevel > limit) {
         return true;
     }
@@ -80,6 +80,8 @@ var greenLed = new groveSensor.GroveLed(3);
 var redLed = new groveSensor.GroveLed(2);
 var blueLed = new groveSensor.GroveLed(4);
 var motor = new Uln200xa_lib.ULN200XA(4096, 8, 9, 10, 11); // motor
+var loudMessageSent = false;
+var cumMessageSent = false;
 
 /* Alert user that the device is working by turning on green light 
     and issuing start-up vibration sequence.
@@ -98,35 +100,33 @@ function vibrateEndTooLoud(){
 function vibrateOverExposure(){
 }
 
+
 function runMotor(){
     motor.stepsPerRevolution = 100;
+    
     motor.goForward = function()
-
     {
         motor.setSpeed(5); // 5 RPMs
         motor.setDirection(Uln200xa_lib.ULN200XA.DIR_CW);
-        console.log("Rotating motor clockwise.");
-        motor.stepperSteps(500);
+        motor.stepperSteps(2);
     };
-    // go counterclockwise to close
-        motor.reverseDirection = function()
-    {
-        console.log("Rotating motor counter clockwise");
-        motor.setDirection(motor.ULN200XA.DIR_CCW);
-        motor.stepperSteps(500);
-    };
+    
 
     // Run ULN200xa driven stepper
     motor.goForward();
     setTimeout(motor.reverseDirection, 500);
+    
 }
 
 function stopMotor(){
+    motor.release();
 }
+
 
 function alertOn(){
     greenLed.on();
     vibrateStartup();
+    cumMessageSent = false;
 }
 
 // Current sound level is safe; does not reset cumulative alert.
@@ -140,8 +140,10 @@ function alertLoud(){
     greenLed.off();
     redLed.on();
     vibrateTooLoud();
-    if (globalSocket !== null){
+    if (globalSocket !== null & !loudMessageSent){
+        // TODO: reset loudMessageSend every 10 minutes
         globalSocket.emit("alert", "Sound level is dangerous. Immediately reduce exposure.");
+        loudMessageSent = true;
     }
 }
 
@@ -150,8 +152,9 @@ function alertOverExposure(){
     greenLed.off();
     blueLed.on();
     vibrateOverExposure();
-    if (globalSocket !== null){
+    if (globalSocket !== null & !cumMessageSent){
         globalSocket.emit("alert", "Daily cummulative sound exposure above level above safe levels.");
+        cumMessageSent = true;
     }
 }
 
@@ -179,7 +182,7 @@ setInterval(function()
 {
     /* TODO: enter command for midnight and uncomment
     if (midnight){
-        alertOn()
+        alertOn();
     }
     */
     currentsound = sensor.loudness() * raw2db;
@@ -199,7 +202,7 @@ function startSensorWatch(socket){
     var graphfrequency = 500;
     setInterval(function()
     {
-        socket.emit("message", sensor.loudness());
+        socket.emit("message", currentsound);
     }, graphfrequency);
 }
 
