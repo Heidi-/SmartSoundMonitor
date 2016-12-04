@@ -18,6 +18,7 @@ var APP_NAME = "IoT Sound Thing";
 var cfg = require("./cfg-app-platform.js")();          // init and config I/O resources
 var groveSensor = require('jsupm_grove');
 
+
 console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");   // poor man's clear console
 console.log("Initializing " + APP_NAME);
 
@@ -42,6 +43,76 @@ cfg.io = new cfg.mraa.Gpio(cfg.ioPin, cfg.ioOwner, cfg.ioRaw);
 cfg.io.dir(cfg.mraa.DIR_OUT);                  // configure the LED gpio as an output
 console.log("Using LED pin number: " + cfg.ioPin);
 
+
+
+
+// TODO: separate into soundlevel.js
+function isOverDailyLimit(cumulative) {
+    var dailyLimit = 0.01; // time_interval * log(decibel_reading) <= 4.5 is safe level
+    if (cumulative > dailyLimit) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function isOverDangerLimit(soundLevel){
+    var limit = 30;
+    if (soundLevel > limit) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function updateCumulative(deltaT, soundLevel, currCumulative) {
+    var deltaT_hr = deltaT/(1000 * 60 * 60);
+   return currCumulative + deltaT_hr * Math.log(soundLevel);
+}
+// end soundlevl.js
+
+
+// TODO: separate into actions.js
+// Instantiate LED actuators 
+var greenLed = new groveSensor.GroveLed(3);
+var redLed = new groveSensor.GroveLed(2);
+var blueLed = new groveSensor.GroveLed(4);
+// TODO: add motor 
+
+/* Alert user that the device is working by turning on green light 
+    and issuing start-up vibration sequence.
+*/
+function alertOn(){
+    greenLed.on();
+    // TODO: startup vibration
+}
+
+/* Current sound level is safe; does not reset cumulative alert.*/
+function alertNormal(){
+    redLed.off();
+    greenLed.on();
+}
+
+/* Current sound level is unsafe. */
+function alertLoud(){
+    greenLed.off();
+    redLed.on();
+    // TODO: instantanous loud vibration
+}
+
+/* Cumulative exposure has reached daily limit. */
+function alertOverExposure(){
+    greenLed.off();
+    blueLed.on();
+    // TODO: cumulative exposure vibration
+}
+// end actions.js
+
+
+
+
 //Sound Sensor code snippet START
 var sensorObj = require('jsupm_loudness');
 
@@ -49,52 +120,48 @@ var sensorObj = require('jsupm_loudness');
 // reference voltage of 5.0
 var sensor = new sensorObj.Loudness(0, 5.0);
 
-// Every tenth of a second, sample the loudness and output it's
-// corresponding analog voltage. 
-var greenLed = new groveSensor.GroveLed(3);
-//greenLed.on();
-var redLed = new groveSensor.GroveLed(2);
-var isLoud = false;
-//redLed.off();
-var blueLed = new groveSensor.GroveLed(4);
 
+
+// Initialize variables
 var dailysoundexposure = 0.0;
 var currentsound = 0.0;
-var measureFrequency = 5;
+var measureFrequency = 5; // time interval in msec to measure sound level and update
+var raw2db = 26; // conversion from raw measurment to decibel
+
+alertOn();
 
 setInterval(function()
 {
-    currentsound = sensor.loudness();
-    dailysoundexposure += currentsound;
-   // console.log("Detected loudness (volts): " + currentsound); 
-    if (currentsound > .50 && currentsound < 2.00) {
-        greenLed.on();  
-        isLoud = false;
-    } else if (currentsound > 2.00) {
-        redLed.on();
-        isLoud = true;
-        greenLed.off();
-    } else {
-        greenLed.off();
-        redLed.off();
-        isLoud = false;
-    } 
-    if (dailysoundexposure > 1000) {
-        console.log("Cumulative: " + dailysoundexposure);
-        blueLed.on();
+    /* TODO: enter command for midnight and uncomment
+    if (midnight){
+        alertOn()
     }
-     
+    */
+    currentsound = sensor.loudness() * raw2db;
+    dailysoundexposure = updateCumulative(measureFrequency, currentsound, dailysoundexposure);
+    console.log("cumulative: " + dailysoundexposure); 
+  if (isOverDangerLimit(currentsound)){
+       alertLoud();
+    }  else {
+      alertNormal();
+    } 
+    if (isOverDailyLimit(dailysoundexposure)) {
+        alertOverExposure();
+    }
 }, measureFrequency);
 
 
+// TODO: integrate this into actions
+var isLoud = false;
 function startSensorWatch(socket){
+    var graphfrequency = 500;
     setInterval(function()
     {
         if (isLoud) {
             socket.emit("message", "woah loud!!");
         }
         
-    }, 5);
+    }, graphfrequency);
 }
 
 // exit on ^C
@@ -107,13 +174,11 @@ process.on('SIGINT', function()
     process.exit(0);
 });
 
-//End Sound Sensor code snippet
 
 
 //Create Socket.io server
 var http = require('http');
 var app = http.createServer(function (req, res) {
-    'use strict';
     res.writeHead(200, {'Content-Type': 'text/plain'});
     res.end('<h1>Hello world from Intel IoT platform!</h1>');
 }).listen(1337);
@@ -123,7 +188,6 @@ console.log("Sample Reading Touch Sensor");
 
 //Attach a 'connection' event handler to the server
 io.on('connection', function (socket) {
-    'use strict';
     console.log('a user connected');
     //Emits an event along with a message
     socket.emit('connected', 'Welcome');
@@ -136,12 +200,4 @@ io.on('connection', function (socket) {
         console.log('user disconnected');
     });
 });
-
-// type process.exit(0) in debug console to see
-// the following message be emitted to the debug console
-
-process.on("exit", function(code) {
-    clearInterval(intervalID);
-    console.log("\nExiting " + APP_NAME + ", with code:", code);
-}) ;
 
