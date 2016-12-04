@@ -77,9 +77,9 @@ setInterval(function()
 {
     console.log("Detected loudness (volts): " + sensor.loudness()); 
     
-    if (sensor.loudness() > .70 && sensor.loudness() < 1.60) {
+    if (sensor.loudness() > .50 && sensor.loudness() < 2.00) {
        greenLed.on();  
-    } else if (sensor.loudness() > 1.60) {
+    } else if (sensor.loudness() > 2.00) {
         redLed.on();
         greenLed.off();
     } else {
