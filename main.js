@@ -14,7 +14,7 @@
 
 "use strict" ;
 
-var APP_NAME = "IoT LED Blink" ;
+var APP_NAME = "IoT Sound Thing" ;
 var cfg = require("./cfg-app-platform.js")() ;          // init and config I/O resources
 var groveSensor = require('jsupm_grove');
 
@@ -71,22 +71,34 @@ var greenLed = new groveSensor.GroveLed(3);
 greenLed.off();
 var redLed = new groveSensor.GroveLed(2);
 redLed.off();
-
+var isLoud = false;
 
 setInterval(function()
 {
     console.log("Detected loudness (volts): " + sensor.loudness()); 
     if (sensor.loudness() <= 1) {
-       greenLed.on();  
+       greenLed.on(); 
+        isLoud = false;
     } else if (sensor.loudness() > 1) {
         redLed.on();
+        isLoud = true;
         greenLed.off();
     } else {
         greenLed.off();
         redLed.off();
     }
-     
+
 }, 100);
+
+function startSensorWatch(socket){
+    setInterval(function()
+    {
+        if (isLoud) {
+            socket.emit("message", "woah loud!!");
+        }
+        
+    }, 100);
+}
 
 // exit on ^C
 process.on('SIGINT', function()
@@ -100,6 +112,33 @@ process.on('SIGINT', function()
 
 //End Sound Sensor code snippet
 
+
+//Create Socket.io server
+var http = require('http');
+var app = http.createServer(function (req, res) {
+    'use strict';
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('<h1>Hello world from Intel IoT platform!</h1>');
+}).listen(1337);
+var io = require('socket.io')(app);
+
+console.log("Sample Reading Touch Sensor");
+
+//Attach a 'connection' event handler to the server
+io.on('connection', function (socket) {
+    'use strict';
+    console.log('a user connected');
+    //Emits an event along with a message
+    socket.emit('connected', 'Welcome');
+
+    //Start watching Sensors connected to Galileo board
+    startSensorWatch(socket);
+
+    //Attach a 'disconnect' event handler to the socket
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
+});
 
 // type process.exit(0) in debug console to see
 // the following message be emitted to the debug console
