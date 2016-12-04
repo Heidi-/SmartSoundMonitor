@@ -17,6 +17,7 @@
 var APP_NAME = "IoT Sound Thing";
 var cfg = require("./cfg-app-platform.js")();          // init and config I/O resources
 var groveSensor = require('jsupm_grove');
+var globalSocket = null; // allows us to push notifications to web app when connected
 
 
 console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");   // poor man's clear console
@@ -45,8 +46,9 @@ console.log("Using LED pin number: " + cfg.ioPin);
 
 
 
-
-// TODO: separate into soundlevel.js
+/*
+ SOUND LEVEL CHECK FUNCTIONS
+*/
 function isOverDailyLimit(cumulative) {
     // var dailyLimit = 4.5; // time_interval * log(decibel_reading) <= 4.5 is safe level
     var dailyLimit = 0.01; // demo level
@@ -73,10 +75,12 @@ function updateCumulative(deltaT, soundLevel, currCumulative) {
     var deltaT_hr = deltaT/(1000 * 60 * 60);
    return currCumulative + deltaT_hr * Math.log(soundLevel);
 }
-// end soundlevl.js
 
 
-// TODO: separate into actions.js
+
+/*
+    ACTION FUNCTIONS
+*/
 // Instantiate LED actuators 
 var greenLed = new groveSensor.GroveLed(3);
 var redLed = new groveSensor.GroveLed(2);
@@ -103,6 +107,9 @@ function alertLoud(){
     greenLed.off();
     redLed.on();
     // TODO: instantanous loud vibration
+    if (globalSocket !== null){
+        globalSocket.emit("alert", "Sound level is dangerous. Immediately reduce exposure.");
+    }
     // TODO: emit message to socket. Something along the lines of:
     //          "Sound level is dangerous. Immediately reduce exposure."
 }
@@ -115,7 +122,6 @@ function alertOverExposure(){
     // TODO: emit message to socket. Something along the lines of:
     //      "Daily cummulative sound exposure above level above safe levels."
 }
-// end actions.js
 
 
 
@@ -146,7 +152,6 @@ setInterval(function()
     */
     currentsound = sensor.loudness() * raw2db;
     dailysoundexposure = updateCumulative(measureFrequency, currentsound, dailysoundexposure);
-    console.log("cumulative: " + dailysoundexposure); 
   if (isOverDangerLimit(currentsound)){
        alertLoud();
     }  else {
@@ -193,7 +198,7 @@ io.on('connection', function (socket) {
     console.log('a user connected');
     //Emits an event along with a message
     socket.emit('connected', 'Welcome');
-
+    globalSocket = socket;
     //Start watching Sensors connected to Galileo board
     startSensorWatch(socket);
 
