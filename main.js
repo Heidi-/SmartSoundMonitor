@@ -9,7 +9,9 @@
 var APP_NAME = "IoT Sound Thing";
 var cfg = require("./cfg-app-platform.js")();          // init and config I/O resources
 var groveSensor = require('jsupm_grove');
+var Uln200xa_lib = require('jsupm_uln200xa');          // step motor library
 var globalSocket = null; // allows us to push notifications to web app when connected
+
 
 
 console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");   // poor man's clear console
@@ -73,46 +75,84 @@ function updateCumulative(deltaT, soundLevel, currCumulative) {
 /*
     ACTION FUNCTIONS
 */
-// Instantiate LED actuators 
+// Instantiate actuators 
 var greenLed = new groveSensor.GroveLed(3);
 var redLed = new groveSensor.GroveLed(2);
 var blueLed = new groveSensor.GroveLed(4);
-// TODO: add motor 
+var motor = new Uln200xa_lib.ULN200XA(4096, 8, 9, 10, 11); // motor
 
 /* Alert user that the device is working by turning on green light 
     and issuing start-up vibration sequence.
 */
-function alertOn(){
-    greenLed.on();
-    // TODO: startup vibration
+function vibrateStartup(){
 }
 
-/* Current sound level is safe; does not reset cumulative alert.*/
+function vibrateTooLoud(){
+    runMotor();
+}
+
+function vibrateEndTooLoud(){
+    stopMotor();
+}
+
+function vibrateOverExposure(){
+}
+
+function runMotor(){
+    motor.stepsPerRevolution = 100;
+    motor.goForward = function()
+
+    {
+        motor.setSpeed(5); // 5 RPMs
+        motor.setDirection(Uln200xa_lib.ULN200XA.DIR_CW);
+        console.log("Rotating motor clockwise.");
+        motor.stepperSteps(500);
+    };
+    // go counterclockwise to close
+        motor.reverseDirection = function()
+    {
+        console.log("Rotating motor counter clockwise");
+        motor.setDirection(motor.ULN200XA.DIR_CCW);
+        motor.stepperSteps(500);
+    };
+
+    // Run ULN200xa driven stepper
+    motor.goForward();
+    setTimeout(motor.reverseDirection, 500);
+}
+
+function stopMotor(){
+}
+
+function alertOn(){
+    greenLed.on();
+    vibrateStartup();
+}
+
+// Current sound level is safe; does not reset cumulative alert.
 function alertNormal(){
     redLed.off();
     greenLed.on();
-    // TODO: vibration to notify that red alert has been removed.
 }
 
-/* Current sound level is unsafe. */
+// Current sound level is unsafe.
 function alertLoud(){
     greenLed.off();
     redLed.on();
-    // TODO: instantanous loud vibration
+    vibrateTooLoud();
     if (globalSocket !== null){
         globalSocket.emit("alert", "Sound level is dangerous. Immediately reduce exposure.");
     }
-    // TODO: emit message to socket. Something along the lines of:
-    //          "Sound level is dangerous. Immediately reduce exposure."
 }
 
-/* Cumulative exposure has reached daily limit. */
+// Cumulative exposure has reached daily limit. 
 function alertOverExposure(){
     greenLed.off();
     blueLed.on();
-    // TODO: cumulative exposure vibration
-    // TODO: emit message to socket. Something along the lines of:
-    //      "Daily cummulative sound exposure above level above safe levels."
+    vibrateOverExposure();
+    if (globalSocket !== null){
+        globalSocket.emit("alert", "Daily cummulative sound exposure above level above safe levels.");
+    }
 }
 
 
