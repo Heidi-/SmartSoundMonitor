@@ -12,20 +12,18 @@
 /* jslint node:true */
 /* jshint unused:true */
 
-"use strict" ;
+"use strict";
 
-var APP_NAME = "IoT Sound Thing" ;
-var cfg = require("./cfg-app-platform.js")() ;          // init and config I/O resources
+var APP_NAME = "IoT Sound Thing";
+var cfg = require("./cfg-app-platform.js")();          // init and config I/O resources
 var groveSensor = require('jsupm_grove');
 
-console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n") ;   // poor man's clear console
-console.log("Initializing " + APP_NAME) ;
-
+console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");   // poor man's clear console
+console.log("Initializing " + APP_NAME);
 
 
 // confirm that we have a version of libmraa and Node.js that works
 // exit this app if we do not
-
 cfg.identify() ;                // prints some interesting platform details to console
 
 if( !cfg.test() ) {
@@ -38,13 +36,10 @@ if( !cfg.init() ) {
     throw new Error("Call to cfg.init() failed, check console messages for details.") ;
 }
 
-
 // configure (initialize) our I/O pins for usage (gives us an I/O object)
 // configuration is based on parameters provided by the call to cfg.init()
-
 cfg.io = new cfg.mraa.Gpio(cfg.ioPin, cfg.ioOwner, cfg.ioRaw);
 cfg.io.dir(cfg.mraa.DIR_OUT);                  // configure the LED gpio as an output
-
 console.log("Using LED pin number: " + cfg.ioPin);
 
 //Sound Sensor code snippet START
@@ -145,7 +140,7 @@ io.on('connection', function (socket) {
 // the following message be emitted to the debug console
 
 process.on("exit", function(code) {
-    clearInterval(intervalID) ;
-    console.log("\nExiting " + APP_NAME + ", with code:", code) ;
+    clearInterval(intervalID);
+    console.log("\nExiting " + APP_NAME + ", with code:", code);
 }) ;
 
