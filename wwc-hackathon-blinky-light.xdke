@@ -41,14 +41,14 @@
         "name": "icon.png"
       },
       "main.js": {
-        "previousModTime": 1480803951000,
-        "modified": 1480803951000,
+        "previousModTime": 1480815664000,
+        "modified": 1480815664000,
         "seen": true,
         "name": "main.js"
       },
       "package.json": {
-        "previousModTime": 1480803951000,
-        "modified": 1480803951000,
+        "previousModTime": 1480816206000,
+        "modified": 1480816206000,
         "seen": true,
         "name": "package.json"
       },
@@ -59,8 +59,8 @@
         "name": "wwc-hackathon-blinky-light.xdk"
       },
       "wwc-hackathon-blinky-light.xdke": {
-        "previousModTime": 1480805596000,
-        "modified": 1480805596000,
+        "previousModTime": 1480816227000,
+        "modified": 1480816227000,
         "seen": true,
         "name": "wwc-hackathon-blinky-light.xdke"
       },
@@ -83,6 +83,10 @@
         "name": "Blink2/Blink2.ino"
       }
     },
-    "boardFileStatus": {}
+    "boardFileStatus": {
+      "package.json": {
+        "previousModTime": 1480816312939
+      }
+    }
   }
 }

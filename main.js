@@ -97,11 +97,9 @@ setInterval(function()
 function startSensorWatch(socket){
     setInterval(function()
     {
-        if (isLoud) {
-            socket.emit("message", "woah loud!!");
-        }
+            socket.emit("message", sensor.loudness());
         
-    }, 5);
+    }, 500);
 }
 
 // exit on ^C
