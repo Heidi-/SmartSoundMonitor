@@ -68,27 +68,31 @@ var sensor = new sensorObj.Loudness(0, 5.0);
 // Every tenth of a second, sample the loudness and output it's
 // corresponding analog voltage. 
 var greenLed = new groveSensor.GroveLed(3);
-greenLed.off();
+//greenLed.on();
 var redLed = new groveSensor.GroveLed(2);
-redLed.off();
 var isLoud = false;
+
+//redLed.off();
+
 
 setInterval(function()
 {
     console.log("Detected loudness (volts): " + sensor.loudness()); 
-    if (sensor.loudness() <= 1) {
-       greenLed.on(); 
+    if (sensor.loudness() > .50 && sensor.loudness() < 2.00) {
+       greenLed.on();  
         isLoud = false;
-    } else if (sensor.loudness() > 1) {
+    } else if (sensor.loudness() > 2.00) {
         redLed.on();
         isLoud = true;
         greenLed.off();
     } else {
         greenLed.off();
         redLed.off();
-    }
+        isLoud = false;
+    } 
+     
+}, 5);
 
-}, 100);
 
 function startSensorWatch(socket){
     setInterval(function()
@@ -97,7 +101,7 @@ function startSensorWatch(socket){
             socket.emit("message", "woah loud!!");
         }
         
-    }, 100);
+    }, 5);
 }
 
 // exit on ^C
