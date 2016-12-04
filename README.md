@@ -53,14 +53,13 @@ Repo for Accompanying App
 
 Authors/Contributors
 ----------------------------
-* Heidi Perry (GitHub: Heidi-)
-* Addison Nishijima (gh: AddisonNishijima)
-* Alanna Risse (gh: alannarisse)
-* Ewa Manek (gh: ewajm)
-* Sara Jensen (gh: the jensen)
-* Elise Avery Nason (gh: ElysiaAvery)
-* Keeley Hammond (gh: VerteDinde)
-* Susan Johnson (gh: Brownish-Brown)
+* [Heidi Perry](https://github.com/Heidi-)
+* [Addison Nishijima](https://github.com/AddisonNishijima)
+* [Alanna Risse](https://github.com/alannarisse)
+* [Ewa Manek](https://github.com/ewajm)
+* [Sara Jensen](https://github.com/the jensen)
+* [Elise Avery Nason](https://github.com/ElysiaAvery)
+* [Keeley Hammond](https://github.com/VerteDinde)
 
 Copyright (c) 2016.
 
@@ -75,5 +74,5 @@ Data Sources
 ----------------------------
 * http://www.nonoise.org/library/handbook/handbook.htm
 * http://www.who.int/docstore/peh/noise/Commnoise4.htm
-* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1253729/
+* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1253729
 * http://www.nonoise.org/library/smj/smj.htm
