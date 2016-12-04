@@ -73,15 +73,20 @@ var redLed = new groveSensor.GroveLed(2);
 var isLoud = false;
 
 //redLed.off();
+var blueLed = new groveSensor.GroveLed(4);
 
+var dailysoundexposure = 0.0;
+var currentsound = 0.0;
 
 setInterval(function()
 {
-    console.log("Detected loudness (volts): " + sensor.loudness()); 
-    if (sensor.loudness() > .50 && sensor.loudness() < 2.00) {
-       greenLed.on();  
+    currentsound = sensor.loudness();
+    dailysoundexposure += currentsound;
+   // console.log("Detected loudness (volts): " + currentsound); 
+    if (currentsound > .50 && currentsound < 2.00) {
+        greenLed.on();  
         isLoud = false;
-    } else if (sensor.loudness() > 2.00) {
+    } else if (currentsound > 2.00) {
         redLed.on();
         isLoud = true;
         greenLed.off();
@@ -90,6 +95,10 @@ setInterval(function()
         redLed.off();
         isLoud = false;
     } 
+    if (dailysoundexposure > 1000) {
+        console.log("Cumulative: " + dailysoundexposure);
+        blueLed.on();
+    }
      
 }, 5);
 
