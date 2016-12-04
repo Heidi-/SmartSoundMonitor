@@ -67,20 +67,22 @@ Important Project Files
 
 Authors/Contributors
 ----------------------------
-Heidi Perry (GitHub: Heidi-)
-Addison Nishijima (gh: AddisonNishijima)
-Alanna Risse (gh: alannarisse)
-Ewa Manek (gh: ewajm)
-Sara Jensen (gh: the jensen)
-Elise Avery Nason (gh: ElysiaAvery)
-Keeley Hammond (gh: VerteDinde)
-Susan Johnson (gh: Brownish-Brown)
+* Heidi Perry (GitHub: Heidi-)
+* Addison Nishijima (gh: AddisonNishijima)
+* Alanna Risse (gh: alannarisse)
+* Ewa Manek (gh: ewajm)
+* Sara Jensen (gh: the jensen)
+* Elise Avery Nason (gh: ElysiaAvery)
+* Keeley Hammond (gh: VerteDinde)
+* Susan Johnson (gh: Brownish-Brown)
+
 Copyright (c) 2016.
 
 Acknowledgements
 ----------------------------
 Thanks to Women Who Code 2016 and Intel for sponsoring the 2016 Hackathon and 
 providing all of the hardware that we used to build the sound monitor.
+
 Thanks to Simple for providing the space for us to work.
 
 Data Sources
