@@ -40,9 +40,10 @@ console.log("Using LED pin number: " + cfg.ioPin);
 
 
 
-/*
+/****************************
  SOUND LEVEL CHECK FUNCTIONS
-*/
+*****************************/
+
 function isOverDailyLimit(cumulative) {
     // var dailyLimit = 4.5; // time_interval * log(decibel_reading) <= 4.5 is safe level
     var dailyLimit = 0.01; // demo level
@@ -56,7 +57,7 @@ function isOverDailyLimit(cumulative) {
 
 function isOverDangerLimit(soundLevel){
     // var limit = 115; // Do not exceed exposure for more than 15 minutes.
-    var limit = 50; // demo level
+    var limit = 90; // demo level
     if (soundLevel > limit) {
         return true;
     }
@@ -72,9 +73,10 @@ function updateCumulative(deltaT, soundLevel, currCumulative) {
 
 
 
-/*
+/***************************
     ACTION FUNCTIONS
-*/
+***************************/
+
 // Instantiate actuators 
 var greenLed = new groveSensor.GroveLed(3);
 var redLed = new groveSensor.GroveLed(2);
@@ -83,9 +85,7 @@ var motor = new Uln200xa_lib.ULN200XA(4096, 8, 9, 10, 11); // motor
 var loudMessageSent = false;
 var cumMessageSent = false;
 
-/* Alert user that the device is working by turning on green light 
-    and issuing start-up vibration sequence.
-*/
+// Four vibration patterns for tactile alerts
 function vibrateStartup(){
 }
 
@@ -100,7 +100,7 @@ function vibrateEndTooLoud(){
 function vibrateOverExposure(){
 }
 
-
+// The motor is the prototype stand-in for making vibrations
 function runMotor(){
     motor.stepsPerRevolution = 100;
     
@@ -111,18 +111,17 @@ function runMotor(){
         motor.stepperSteps(2);
     };
     
-
     // Run ULN200xa driven stepper
     motor.goForward();
-    setTimeout(motor.reverseDirection, 500);
-    
+    setTimeout(motor.reverseDirection, 500);   
 }
 
 function stopMotor(){
     motor.release();
 }
 
-
+// Alert user that the device is working by turning on green light 
+//    and issuing start-up vibration sequence.
 function alertOn(){
     greenLed.on();
     vibrateStartup();
@@ -160,7 +159,6 @@ function alertOverExposure(){
 
 
 
-
 //Sound Sensor code snippet START
 var sensorObj = require('jsupm_loudness');
 
@@ -175,9 +173,9 @@ var dailysoundexposure = 0.0;
 var currentsound = 0.0;
 var measureFrequency = 5; // time interval in msec to measure sound level and update
 var raw2db = 26; // conversion from raw measurment to decibel
-
 alertOn();
 
+// Magic happens here.
 setInterval(function()
 {
     /* TODO: enter command for midnight and uncomment
