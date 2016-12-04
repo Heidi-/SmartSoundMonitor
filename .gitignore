@@ -27,3 +27,5 @@ Thumbs.db
 .hg
 .svn
 .CVS
+
+node_modules/
