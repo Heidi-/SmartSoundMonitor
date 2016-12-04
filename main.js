@@ -93,6 +93,7 @@ function alertOn(){
 function alertNormal(){
     redLed.off();
     greenLed.on();
+    // TODO: vibration to notify that red alert has been removed.
 }
 
 /* Current sound level is unsafe. */
@@ -100,6 +101,8 @@ function alertLoud(){
     greenLed.off();
     redLed.on();
     // TODO: instantanous loud vibration
+    // TODO: emit message to socket. Something along the lines of:
+    //          "Sound level is dangerous. Immediately reduce exposure."
 }
 
 /* Cumulative exposure has reached daily limit. */
@@ -107,6 +110,8 @@ function alertOverExposure(){
     greenLed.off();
     blueLed.on();
     // TODO: cumulative exposure vibration
+    // TODO: emit message to socket. Something along the lines of:
+    //      "Daily cummulative sound exposure above level above safe levels."
 }
 // end actions.js
 
