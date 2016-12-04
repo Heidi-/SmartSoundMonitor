@@ -48,7 +48,8 @@ console.log("Using LED pin number: " + cfg.ioPin);
 
 // TODO: separate into soundlevel.js
 function isOverDailyLimit(cumulative) {
-    var dailyLimit = 0.01; // time_interval * log(decibel_reading) <= 4.5 is safe level
+    // var dailyLimit = 4.5; // time_interval * log(decibel_reading) <= 4.5 is safe level
+    var dailyLimit = 0.01; // demo level
     if (cumulative > dailyLimit) {
         return true;
     }
@@ -58,7 +59,8 @@ function isOverDailyLimit(cumulative) {
 }
 
 function isOverDangerLimit(soundLevel){
-    var limit = 30;
+    // var limit = 115; // Do not exceed exposure for more than 15 minutes.
+    var limit = 30; // demo level
     if (soundLevel > limit) {
         return true;
     }
