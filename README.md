@@ -73,7 +73,7 @@ Thanks to Simple for providing the space for us to work.
 
 Data Sources
 ----------------------------
-* http://www.nonoise.org/library/handbook/handbook.htm\
-* http://www.who.int/docstore/peh/noise/Commnoise4.htm\
-* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1253729/\
-* http://www.nonoise.org/library/smj/smj.htm\
+* http://www.nonoise.org/library/handbook/handbook.htm
+* http://www.who.int/docstore/peh/noise/Commnoise4.htm
+* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1253729/
+* http://www.nonoise.org/library/smj/smj.htm
