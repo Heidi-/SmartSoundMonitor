@@ -1,16 +1,8 @@
 /*
- * A simple Node.js application to blink the onboard LED.
- * Supported Intel IoT development boards are identified in the code.
- *
+ * Personal sound/noise exposure monitor
+ * Developed for WWC and Intel Hackathon 2016
  * See LICENSE.md for license terms and conditions.
- *
- * https://software.intel.com/en-us/html5/articles/intel-xdk-iot-edition-nodejs-templates
  */
-
-// keep /*jslint and /*jshint lines for proper jshinting and jslinting
-// see http://www.jslint.com/help.html and http://jshint.com/docs
-/* jslint node:true */
-/* jshint unused:true */
 
 "use strict";
 
