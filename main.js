@@ -60,6 +60,7 @@ var blueLed = new groveSensor.GroveLed(4);
 
 var dailysoundexposure = 0.0;
 var currentsound = 0.0;
+var measureFrequency = 5;
 
 setInterval(function()
 {
@@ -83,7 +84,7 @@ setInterval(function()
         blueLed.on();
     }
      
-}, 5);
+}, measureFrequency);
 
 
 function startSensorWatch(socket){
