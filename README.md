@@ -1,4 +1,4 @@
-Intel® XDK IoT Node.js* Personal Sound/Noise Exposure Monitor
+Intel® XDK IoT * Personal Sound/Noise Exposure Monitor
 =============================================
 See [LICENSE.md](LICENSE.md) for license terms and conditions.
 
