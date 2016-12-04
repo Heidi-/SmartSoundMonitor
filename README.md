@@ -64,6 +64,10 @@ Important Project Files
 * project-name.xdk
 * project-name.xdke
 
+Repo for Accompanying App
+------------------------------
+* https://github.com/AddisonNishijima/wwc-hackathon-sound-companion-app
+
 
 Authors/Contributors
 ----------------------------
